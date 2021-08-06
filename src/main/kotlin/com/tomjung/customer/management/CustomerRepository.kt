@@ -1,7 +1,10 @@
 package com.tomjung.customer.management
 
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.find
 import org.springframework.data.mongodb.core.findById
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
@@ -24,4 +27,9 @@ class CustomerRepository(private val template: ReactiveMongoTemplate) {
 
     fun create(customer: Mono<Customer>) = template.save(customer)
     fun findById(id: Int) = template.findById<Customer>(id)
+    fun findCustomer(nameFilter: String) = template.find<Customer>(
+        Query(
+            Criteria.where("name").regex(".*$nameFilter.*", "i")
+        )
+    )
 }

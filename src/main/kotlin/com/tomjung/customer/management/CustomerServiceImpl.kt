@@ -11,4 +11,5 @@ class CustomerServiceImpl : CustomerService {
     lateinit var customerRepository: CustomerRepository
 
     override fun getCustomer(id: Int): Mono<Customer> = customerRepository.findById(id)
+    override fun searchCustomers(nameFilter: String) = customerRepository.findCustomer(nameFilter)
 }
